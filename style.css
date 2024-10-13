@@ -1,0 +1,14 @@
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  padding-top: 2em;
+}
+
+article {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}

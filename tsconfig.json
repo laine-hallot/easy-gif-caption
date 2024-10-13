@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "module": "ESNext",
+    "moduleResolution": "Node10",
+    "target": "ESNext",
+    "allowJs": true,
+    "outDir": "dist"
+  },
+  "files": ["src/index.ts"]
+}
