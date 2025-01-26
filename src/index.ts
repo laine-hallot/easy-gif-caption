@@ -21,8 +21,8 @@ const start = () => {
     body.appendChild(errorDiv);
     return;
   }
-  const { fileInput, textInput, submitButton } = attachResult.data;
-  const handleClick = clickStuff({ fileInput, textInput });
+  const { fileInput, textInput, submitButton, outputArea } = attachResult.data;
+  const handleClick = clickStuff({ fileInput, textInput, outputArea });
   submitButton.addEventListener('click', async (event) => {
     submitButton.disabled = true;
     try {
@@ -96,16 +96,18 @@ const transcode = async (text: string) => {
 const clickStuff = ({
   fileInput,
   textInput,
+  outputArea,
 }: {
   fileInput: HTMLInputElement;
   textInput: HTMLInputElement;
+  outputArea: HTMLElement;
 }) => {
   return async (event: Event) => {
+    outputArea.innerHTML = '';
     console.log(fileInput.files);
     const player = await transcode(textInput.value.toUpperCase());
-    document.body.appendChild(player);
+    outputArea.appendChild(player);
   };
 };
 
 start();
-console.log('Hello World!');
