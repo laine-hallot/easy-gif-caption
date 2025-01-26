@@ -9,16 +9,12 @@ const config = {
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    assetModuleFilename: '[file]',
   },
   devtool: 'inline-source-map',
   devServer: {
     open: true,
     host: 'localhost',
-    static: {
-      directory: path.join(process.cwd(), './assets/'),
-      serveIndex: true,
-      publicPath: '/assets/',
-    },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -40,8 +36,12 @@ const config = {
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        test: /\.(svg|png|jpg|gif)$/i,
         type: 'asset',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       },
 
       // Add your rules for custom modules here

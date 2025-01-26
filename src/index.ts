@@ -76,7 +76,7 @@ const transcode = async (text: string) => {
   );
   const meta = await getVideoMeta(fileByteArray);
   console.log(meta);
-  await ffmpeg.writeFile('impact.ttf', await fetchFile('/assets/impact.ttf'));
+  await ffmpeg.writeFile('impact.ttf', await fetchFile('assets/impact.ttf'));
   await ffmpeg.writeFile('input.webm', fileByteArray);
   const textAreaHeight = 60;
   const totalFrameHeight = textAreaHeight + meta.videoHeight;
