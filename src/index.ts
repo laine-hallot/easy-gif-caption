@@ -35,23 +35,24 @@ const start = () => {
 };
 
 const getVideoMeta = async (fileByteArray: Uint8Array) => {
-  const videoElm = document.createElement('video');
+  const videoElm = document.createElement('img');
   videoElm.src = URL.createObjectURL(
-    new Blob([fileByteArray], { type: 'video/mp4' }),
+    new Blob([fileByteArray], { type: 'image/gif' }),
   );
   const meta = await new Promise<{
-    videoHeight: number;
-    videoWidth: number;
-    duration: number;
+    height: number;
+    width: number;
   }>((resolve, reject) => {
-    videoElm.onloadedmetadata = (event: Event) => {
-      const { target } = event as unknown as { target: HTMLVideoElement };
+    const timeout = setTimeout(() => {
+      reject();
+    }, 10000);
+    videoElm.onload = (event: Event) => {
+      const { target } = event as unknown as { target: HTMLImageElement };
       console.log(target);
-      const { videoHeight, videoWidth, duration } = target;
-      resolve({ videoHeight, videoWidth, duration });
+      const { naturalHeight, naturalWidth } = target;
+      clearTimeout(timeout);
+      resolve({ height: naturalHeight, width: naturalWidth });
     };
-
-    videoElm.load();
   });
   /*  // idk if this gets gc'ed properly so just force it to load nothing before we leave this function
   videoElm.src = '';
@@ -68,21 +69,20 @@ const getVideoMeta = async (fileByteArray: Uint8Array) => {
   return meta;
 };
 
-const transcode = async (text: string) => {
+const transcode = async (gifData: File, text: string) => {
   const ffmpeg = new FFmpeg();
   await ffmpeg.load();
-  const fileByteArray = await fetchFile(
-    'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm',
-  );
+  const fileByteArray: Uint8Array<ArrayBufferLike> = await fetchFile(gifData);
+  console.log(fileByteArray);
   const meta = await getVideoMeta(fileByteArray);
   console.log(meta);
   await ffmpeg.writeFile('impact.ttf', await fetchFile('assets/impact.ttf'));
   await ffmpeg.writeFile('input.webm', fileByteArray);
   const textAreaHeight = 60;
-  const totalFrameHeight = textAreaHeight + meta.videoHeight;
+  const totalFrameHeight = textAreaHeight + meta.height;
   const filters = [
     //'drawbox=x=10:y=0:w=200:h=60:color=red@0.5',
-    `pad=width=${meta.videoWidth}:height=${totalFrameHeight}:x=0:y=${textAreaHeight}:color=white`,
+    `pad=width=${meta.width}:height=${totalFrameHeight}:x=0:y=${textAreaHeight}:color=white`,
     `drawtext=fontfile=/impact.ttf:text='${text}':x=(w-text_w)/2:y=10:fontsize=24:fontcolor=black`,
   ].join(', ');
   console.log(filters);
@@ -105,8 +105,11 @@ const clickStuff = ({
   return async (event: Event) => {
     outputArea.innerHTML = '';
     console.log(fileInput.files);
-    const player = await transcode(textInput.value.toUpperCase());
-    outputArea.appendChild(player);
+    if (fileInput.files !== null) {
+      const targetGif = fileInput.files[0];
+      const player = await transcode(targetGif, textInput.value.toUpperCase());
+      outputArea.appendChild(player);
+    }
   };
 };
 
