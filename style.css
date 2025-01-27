@@ -10,10 +10,32 @@
 body {
   font-family: monospace;
   color: white;
-  background-color: rgb(34, 38, 41);
+  background-color: #16181a;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+body > * {
+  padding: 0 16px;
+}
+/* don't set padding on webpack error popup */
+body > iframe {
+  padding: 0;
+}
+
+a {
+  color: #94a1ff;
+}
+
+a:visited {
+  color: #cd9df2;
 }
 
 main {
+  flex: 1;
+  flex-basis: 100vh;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -25,5 +47,49 @@ article {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  align-items: center;
+}
+
+aside {
+  background-color: #212528;
+  padding: 8px 8rem 42px;
+}
+
+@media (max-width: 422px) {
+  aside {
+    padding: 8px 16px 42px;
+  }
+}
+
+.aside-content {
+  max-width: 680px;
+}
+
+.inline-pre {
+  display: inline-block;
+  padding: 2px 4px;
+  border-radius: 8px;
+  border: 1px solid #2e2e2e;
+  background-color: #191919;
+}
+
+footer {
+  display: flex;
+  padding: 8px 16px;
+  position: sticky;
+  bottom: 0;
+}
+
+.footer-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: end;
+  gap: 4px;
+  z-index: 2;
   align-items: center;
 }

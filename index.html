@@ -2,7 +2,42 @@
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
-    <title>Webpack App</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- TODO:  deal with the CSP at some point -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'" /> -->
+
+    <!--  PWA usage -->
+    <meta name="application-name" content="Easy gif Caption" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Easy gif Caption" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!-- mobile browser UI color -->
+    <meta name="theme-color" content="#222629" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#222629" />
+
+    <meta
+      name="description"
+      content="Add a caption to any .gif easily with no ads"
+    />
+    <meta
+      name="keywords"
+      content="gif, meme, caption, maker, generator, discord"
+    />
+
+    <!-- crawler stuff  -->
+    <meta name="robots" content="index,follow" />
+    <meta name="googlebot" content="index,follow" />
+
+    <!-- other info -->
+    <link rel="author" href="https://github.com/laine-hallot" />
+    <link
+      rel="license"
+      href="https://github.com/laine-hallot/easy-gif-caption/blob/main/LICENSE"
+    />
+
+    <title>Easy gif Caption</title>
   </head>
   <body>
     <main>
@@ -14,5 +49,38 @@
         <section id="output"></section>
       </article>
     </main>
+    <aside>
+      <div class="aside-content">
+        <h2>Info:</h2>
+        <p>
+          Easy gif Caption allows you to add a caption on pretty much any gif.
+        </p>
+        <p>
+          The layout of the resulting gif is modeled after
+          <a href="https://github.com/Jacherr/assyst2">Assyst</a>'s
+          <span class="inline-pre">-caption</span> function (idk if that's where
+          the particular black on white top caption format came from but that's
+          what I've always used to make them ¯\_(ツ)_/¯)
+        </p>
+        <p>
+          Everything is done on your device using
+          <a href="https://ffmpegwasm.netlify.app/">ffmpegwasm</a> which keeps
+          this site's hosting costs low ($0), meaning there's no ads.
+        </p>
+      </div>
+    </aside>
+    <footer>
+      <div class="footer-info">
+        <span>alpha</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/laine-hallot/easy-gif-caption">
+          <img
+            src="<%=require('./assets/github-mark-white.svg')%>"
+            height="22px"
+          />
+        </a>
+      </div>
+    </footer>
   </body>
 </html>
