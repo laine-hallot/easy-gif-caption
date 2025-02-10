@@ -69,7 +69,20 @@ const getVideoMeta = async (fileByteArray: Uint8Array) => {
   return meta;
 };
 
+const FONT_SIZE = 24;
+const LINE_HEIGHT = 1.4;
+const TOP_BOTTOM_PADDING = 8;
+
+const calcTextHeight = (text: string): number => {
+  const lineBreakCount = text.match(/\n/g)?.length ?? 1;
+  console.log({ lineBreakCount });
+  const totalHeight = Math.ceil(FONT_SIZE * LINE_HEIGHT * lineBreakCount);
+  console.log({ totalHeight });
+  return totalHeight;
+};
+
 const transcode = async (gifData: File, text: string) => {
+  console.log(text);
   const ffmpeg = new FFmpeg();
   await ffmpeg.load();
   const fileByteArray: Uint8Array<ArrayBufferLike> = await fetchFile(gifData);
@@ -78,12 +91,14 @@ const transcode = async (gifData: File, text: string) => {
   console.log(meta);
   await ffmpeg.writeFile('impact.ttf', await fetchFile('assets/impact.ttf'));
   await ffmpeg.writeFile('input.webm', fileByteArray);
-  const textAreaHeight = 60;
-  const totalFrameHeight = textAreaHeight + meta.height;
+  const textHeight = calcTextHeight(text);
+  const textBoxHeight = textHeight + TOP_BOTTOM_PADDING * 2;
+  console.log(textBoxHeight);
+  const totalFrameHeight = textBoxHeight + meta.height;
   const filters = [
     //'drawbox=x=10:y=0:w=200:h=60:color=red@0.5',
-    `pad=width=${meta.width}:height=${totalFrameHeight}:x=0:y=${textAreaHeight}:color=white`,
-    `drawtext=fontfile=/impact.ttf:text='${text}':x=(w-text_w)/2:y=10:fontsize=24:fontcolor=black`,
+    `pad=width=${meta.width}:height=${totalFrameHeight}:x=0:y=${textBoxHeight}:color=white`,
+    `drawtext=fontfile=/impact.ttf:text='${text}':x=(w-text_w)/2:y=${Math.ceil(textBoxHeight / 2) - Math.ceil(textHeight / 2) + TOP_BOTTOM_PADDING}:fontsize=24:fontcolor=black`,
   ].join(', ');
   console.log(filters);
   await ffmpeg.exec(['-i', 'input.webm', '-vf', filters, 'output.gif']);
